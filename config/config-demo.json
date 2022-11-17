@@ -1,0 +1,8 @@
+{
+  "testI": 2,
+  "testS": "test-string",
+  "testF": 2.4,
+  "testB": true,
+  "testO": {"Name": "ironhead","age": 24},
+  "testSlice": [{"Name": "ironhead","age": 24}]
+}

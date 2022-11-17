@@ -1,16 +1,20 @@
 package core
 
 import (
-	"goboot/log/mlog"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"goboot/config"
+	"goboot/log/mlog"
 )
 
 var logger = mlog.NewLogger(`bootcore`)
 var GoCore *Core
 
 type Core struct {
+	config *config.Config
+
 	signal chan os.Signal
 
 	startActs []func() error
@@ -19,6 +23,7 @@ type Core struct {
 
 func NewCore() (core *Core) {
 	core = new(Core)
+	core.config = config.NewConfiguration(config.ConfigFilePath)
 	core.signal = make(chan os.Signal, 1)
 	return
 }
