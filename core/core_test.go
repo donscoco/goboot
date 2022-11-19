@@ -1,20 +1,25 @@
 package core
 
 import (
-	"goboot/log/mlog"
+	"syscall"
 	"testing"
+	"time"
+
+	"goboot/config"
+	"goboot/log/mlog"
 )
 
 // go test -v -run TestCore ./core
 func TestCore(t *testing.T) {
-	//os.Setenv(mlog.LogPathEnvName, "/tmp/logpath")
-	//os.Setenv(mlog.LogLevelEnvName, "INFO")
-	//os.Setenv(mlog.LogModeEnvName, "hour")
-	//mlog.InitLogger()
-	// 先设置环境变量
-	// export GOBOOT_LOG_PATH=/tmp/logpath && export GOBOOT_LOG_LEVEL=INFO && export GOBOOT_LOG_MODE=hour
 
+	config.ConfigFilePath = "../config-demo.json"
 	GoCore = NewCore()
+
+	go func() { // ci 下可能会卡住，2秒后自动模拟退出信号
+		time.Sleep(2 * time.Second)
+		GoCore.signal <- syscall.SIGINT
+	}()
+
 	GoCore.OnStart(startFunc1, startFunc2)
 	GoCore.OnStop(stopFunc2, stopFunc1)
 	GoCore.Boot()

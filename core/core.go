@@ -53,7 +53,12 @@ func (a *Core) OnStop(stops ...func() error) {
 }
 
 func (a *Core) start() {
+
+	mlog.InitLoggerByConfig(a.GetConf(), "/core/log")
+
 	logger.Infof("应用开始启动")
+
+	//todo 启动core的组件
 
 	// 执行业务开机动作
 	for _, startAct := range a.startActs {
@@ -97,5 +102,12 @@ func (a *Core) stop() {
 		}
 	}
 
+	//todo 关闭core的组件
+	mlog.Close()
+
 	logger.Infof("应用关闭完成")
+}
+
+func (a *Core) GetConf() (c *config.Config) {
+	return a.config
 }

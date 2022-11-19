@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"goboot/log/mlog"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -14,7 +14,6 @@ import (
 	"time"
 )
 
-var logger = mlog.NewLogger("config")
 var ConfigFilePath string
 
 // 节点
@@ -38,8 +37,7 @@ func NewConfiguration(path string) (c *Config) {
 	c = new(Config)
 	err := c.parse(path)
 	if err != nil {
-		logger.Errorf("解析配置错误: %s", err)
-		os.Exit(1)
+		log.Fatalf("解析配置错误: %s", err)
 	}
 	return
 }
@@ -173,8 +171,11 @@ var regx = regexp.MustCompile(`\${[A-Za-z0-9\-_]+}`)
 
 func replaceEnv(origin string) string {
 	return regx.ReplaceAllStringFunc(origin, func(match string) string {
-		if match[2:6] == `ENV_` { // match : ${ENV_XXXXXX}
-			match = os.Getenv(match[6 : len(match)-1])
+		//if match[2:6] == `ENV_` { // match : ${ENV_XXXXXX}
+		//	match = os.Getenv(match[2 : len(match)-1])
+		//}
+		if match[:2] == `${` && match[len(match)-1:] == `}` { // match : ${XXXXXX}
+			match = os.Getenv(match[2 : len(match)-1])
 		}
 		return match
 	})

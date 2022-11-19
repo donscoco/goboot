@@ -16,6 +16,8 @@ func TestLog(t *testing.T) {
 	os.Setenv(LogLevelEnvName, "INFO")
 	os.Setenv(LogModeEnvName, "hour")
 
+	InitLoggerByEnv()
+
 	Info("test info")
 	Debug("test debug")
 	Warn("test warn")

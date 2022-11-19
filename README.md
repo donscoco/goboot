@@ -11,10 +11,12 @@ go启动框架
 - [ ] http
 - [ ] register
 - [ ] monitor
+- [ ] cache
+  - [ ] LRU
+  - [ ] concurrent map
 - [ ] util
   - [ ] ratelimit
   - [ ] distributed lockd
-  - [ ] LRU
   - [ ] sql parser
   - [ ] Bloom filter
 

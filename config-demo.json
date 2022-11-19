@@ -1,0 +1,53 @@
+{
+  "core": {
+    "log": {
+      "logPath": "/tmp/logpath",
+      "logLevel": "INFO",
+      "logMode": "day"
+    },
+    "dbManager": {
+      "mysql": [{
+        "proxyname": "ironhead-mysql",
+        "username": "ironhead",
+        "password": "${IRONHEAD_PWD}",
+        "addr": "192.168.2.160:3306",
+        "database": "test",
+        "ConnMaxLifetime":7200
+      }],
+      "redis": [
+        {
+          "proxyname": "ironhead-redis",
+          "username": "ironhead",
+          "password": "",
+          "addrs": ["192.168.2.128:6379"],
+          "database": 0,
+          "DialTimeout": 10,
+          "ReadTimeout":30,
+          "WriteTimeout":30,
+          "MaxRetries":   3
+        }
+      ],
+      "mongodb": [
+        {
+          "proxyname": "ironhead-mongodb",
+          "username": "ironhead",
+          "password": "${IRONHEAD_PWD}",
+          "addrs":  [
+            "192.168.2.128:27017",
+            "192.168.2.128:27018",
+            "192.168.2.128:27019"
+          ],
+          "database":  "ironhead",
+          "ReplicaSetName": "ironhead",
+          "timeout": 5
+      }
+      ]
+    },
+    "mq": {
+      "redis": [],
+      "kafka": []
+    }
+  },
+  "ServerObj": {
+  }
+}

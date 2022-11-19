@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
+	"goboot/config"
 )
 
 // 全局的实例
@@ -28,17 +30,26 @@ const LogModeEnvName = `GOBOOT_LOG_MODE`
 var Level int
 var Mode int
 
-func init() {
+// 使用配置文件作为log的参数
+func InitLoggerByConfig(conf *config.Config, path string) {
+	__logPath = conf.GetString(path + "/logPath")
+	__level = conf.GetString(path + "/logLevel")
+	__updateMode = conf.GetString(path + "/logMode")
+
+	InitLogger()
+}
+
+// 使用环境变量作为log的参数
+func InitLoggerByEnv() {
+	__logPath = os.Getenv(LogPathEnvName)
+	__level = os.Getenv(LogLevelEnvName)
+	__updateMode = os.Getenv(LogModeEnvName)
+
 	InitLogger()
 }
 
 // InitLogger 初始化日志对象
 func InitLogger() {
-
-	// 初始化设置 //todo 通过配置文件来配置
-	__logPath = os.Getenv(LogPathEnvName)
-	__level = os.Getenv(LogLevelEnvName)
-	__updateMode = os.Getenv(LogModeEnvName)
 
 	initLevel()
 	initMode()
@@ -74,8 +85,12 @@ func initLevel() {
 	case "PRODUCT":
 		Level = LOG_WARN | LOG_ERROR
 	default:
-		log.Fatalln("undefined env log level")
+		//log.Fatalln("undefined env log level")
+		// 默认debug
+		log.Println("undefined env log level, use debug level")
+		Level = LOG_DEBUG | LOG_INFO | LOG_WARN | LOG_ERROR
 	}
+	log.Printf("init log level by %s \n", __level)
 }
 func initMode() {
 	switch __updateMode {
@@ -84,6 +99,7 @@ func initMode() {
 	case "hour":
 		Mode = UpdateModeHour
 	default:
+		log.Println("undefined env log mode, use UpdateModeWithoutDivision")
 		Mode = UpdateModeWithoutDivision
 	}
 	log.Printf("init log update mode by %s \n", __updateMode)
@@ -104,6 +120,7 @@ func initPath() {
 	InfoLogFile, _ = filepath.Abs(filepath.Join(__logPath, "app.log"))
 	ErrorLogFile, _ = filepath.Abs(filepath.Join(__logPath, "error.log"))
 	WarnLogFile, _ = filepath.Abs(filepath.Join(__logPath, "warn.log"))
+
 	log.Println("log file base:", __logPath)
 }
 
