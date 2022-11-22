@@ -25,6 +25,7 @@ type KafkaProducer struct {
 			Password string
 		}
 
+		SetLog       bool
 		ReturnSuc    bool   // 打印发送成功的信息
 		WaitForAll   bool   // 所有kafka节点都要收到消息才继续
 		RequiredAcks string //
@@ -74,6 +75,10 @@ func CreateProducer(config *config.Config, path string) (p *KafkaProducer, err e
 		} else {
 			logger.Errorf("错误的 Kafka 版本配置: %s", p.config.Version)
 		}
+	}
+
+	if p.config.SetLog {
+		sarama.Logger = newSaramaLogger()
 	}
 
 	p.saramaConfig = sconf

@@ -5,6 +5,7 @@ import (
 	"github.com/Shopify/sarama"
 	cluster "github.com/bsm/sarama-cluster"
 	"goboot/config"
+	"goboot/log/mlog"
 	"os"
 	"sync"
 	"time"
@@ -25,6 +26,7 @@ type KafkaConsumer struct {
 			Enable   bool
 			Interval int
 		}
+		SetLog  bool
 		Version string // 驱动应该用什么版本的api与服务器对话，最好和服务器版本保持一致以避免怪问题
 	}
 	saramaConfig *cluster.Config
@@ -68,12 +70,18 @@ func CreateConsumer(config *config.Config, path string) (c *KafkaConsumer, err e
 			os.Exit(1)
 		}
 	}
+
+	//cconf.Net.ReadTimeout = 30 * time.Second
 	c.saramaConfig = cconf
 	c.consumer, err = cluster.NewConsumer(c.config.Brokers, c.config.GroupId, c.config.Topics, c.saramaConfig)
 	if err != nil {
 		return nil, err
 	}
 	c.output = make(chan *sarama.ConsumerMessage, 100)
+
+	if c.config.SetLog {
+		sarama.Logger = newSaramaLogger()
+	}
 
 	return c, nil
 }
@@ -136,4 +144,25 @@ func (s *KafkaConsumer) Commit(msgs ...sarama.ConsumerMessage) {
 		s.consumer.MarkPartitionOffset(m.Topic, m.Partition, m.Offset, "")
 	}
 	s.consumer.CommitOffsets()
+}
+
+type saramaLogger struct {
+	logger *mlog.ServerLogger
+}
+
+func (s *saramaLogger) Print(v ...interface{}) {
+	s.logger.Info(fmt.Sprint(v...))
+}
+func (s *saramaLogger) Printf(format string, v ...interface{}) {
+	s.logger.Infof(format, v...)
+}
+func (s *saramaLogger) Println(v ...interface{}) {
+	s.logger.Info(fmt.Sprint(v...))
+}
+func newSaramaLogger() (sl *saramaLogger) {
+	sl = &saramaLogger{
+		logger: mlog.NewLogger("saramaLogger"),
+	}
+
+	return
 }

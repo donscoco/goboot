@@ -30,6 +30,7 @@ func work() error {
 	if err != nil {
 		mlog.Errorf("%s", err.Error())
 	}
+	fmt.Println(consumer)
 	consumer.Start()
 
 	go func() {
