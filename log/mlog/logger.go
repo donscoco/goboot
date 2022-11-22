@@ -91,6 +91,24 @@ func (l *Logger) getPath() (path string, err error) {
 	return
 }
 
+func (l *Logger) getTimer() (t *time.Timer) {
+	now := time.Now()
+	var next time.Time
+	switch l.UpdateMode {
+	// 按小时更新
+	case UpdateModeHour:
+		next = now.Add(time.Hour)
+		next = time.Date(next.Year(), next.Month(), next.Day(), next.Hour(), 0, 0, 0, next.Location())
+	// 按天更新
+	case UpdateModeDay:
+		next = now.Add(time.Hour * 24)
+		next = time.Date(next.Year(), next.Month(), next.Day(), 0, 0, 0, 0, next.Location())
+	}
+
+	t = time.NewTimer(next.Sub(now))
+	return t
+}
+
 // log 输出到标准流
 func (l *Logger) initStdout() {
 	var w io.Writer
@@ -133,8 +151,11 @@ func (l *Logger) initUpdateMode() {
 	}
 	// 定时检查更新log文件
 	go func() {
+		var timer *time.Timer
 		for {
 			// 定时唤醒
+			timer = l.getTimer()
+			<-timer.C
 
 			// 更换新文件 fix:close 使用close的还有正在打印的协程，所以要加锁
 			l.Lock.Lock()
