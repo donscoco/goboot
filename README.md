@@ -4,9 +4,9 @@ go启动框架
 
 - [x] Core
 - [x] log
-- [ ] config
-- [ ] db
-- [ ] mq
+- [x] config
+- [x] db
+- [x] mq
 - [ ] rpc
 - [ ] http
 - [ ] register
