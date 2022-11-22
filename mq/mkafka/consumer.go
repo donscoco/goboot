@@ -20,6 +20,7 @@ type KafkaConsumer struct {
 			User     string
 			Password string
 		}
+		ClientId   string
 		GroupId    string   // 消费组
 		Topics     []string // topic
 		AutoCommit struct {
@@ -44,6 +45,7 @@ func CreateConsumer(config *config.Config, path string) (c *KafkaConsumer, err e
 	}
 
 	cconf := cluster.NewConfig()
+	cconf.ClientID = c.config.ClientId
 	// 对应配置
 	cconf.Consumer.Return.Errors = true
 	cconf.Group.Return.Notifications = true

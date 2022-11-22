@@ -70,7 +70,8 @@
           "Version": "0.11.0.1"
         },
         "consumer-config": {
-          "name": "ironhead-prod",
+          "ClientId": "ironhead-c2",
+          "name": "ironhead-cons",
           "Brokers": ["192.168.2.128:9092","192.168.2.128:9093","192.168.2.128:9094"],
           "SASL": {
             "Enable": false,
