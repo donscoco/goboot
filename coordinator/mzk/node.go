@@ -11,11 +11,15 @@ type Node struct {
 	absPath string
 	stat    *zk.Stat
 
-	zk *zookeeperCoordinator
+	zk *ZookeeperCoordinator
 }
 
 func (n *Node) Create(path string, data []byte, isPersisted bool) (*Node, error) {
 	return n.zk.CreateNode(n.path+path, data, isPersisted)
+}
+
+func (n *Node) CreateIfNotExist(path string, data []byte, isPersisted bool) (*Node, error) {
+	return n.zk.CreateNodeIfNotExist(n.path+path, data, isPersisted)
 }
 
 func (n *Node) Get() ([]byte, error) {
@@ -34,6 +38,17 @@ func (n *Node) Set(data []byte) (err error) {
 }
 func (n *Node) GetChildren() (cNodes []string, err error) {
 	cNodes, _, err = n.zk.conn.Children(n.absPath)
+	return
+}
+func (n *Node) GetChildrenNodes() (cNodes []*Node, err error) {
+	cNodesName, _, err := n.zk.conn.Children(n.absPath)
+	for _, path := range cNodesName {
+		cnode, err := n.zk.GetNode(n.path + "/" + path)
+		if err != nil {
+			return nil, err
+		}
+		cNodes = append(cNodes, cnode)
+	}
 	return
 }
 func (n *Node) Remove() error {

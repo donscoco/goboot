@@ -17,7 +17,7 @@ import (
 
 var logger = mlog.NewLogger("coordinator-zk")
 
-type zookeeperCoordinator struct {
+type ZookeeperCoordinator struct {
 	config struct {
 		Addrs   []string
 		Timeout int
@@ -34,8 +34,8 @@ type zookeeperCoordinator struct {
 	sync.WaitGroup
 }
 
-func CreateCoordinator(config *config.Config, path string) (zkc *zookeeperCoordinator, err error) {
-	zkc = new(zookeeperCoordinator)
+func CreateCoordinator(config *config.Config, path string) (zkc *ZookeeperCoordinator, err error) {
+	zkc = new(ZookeeperCoordinator)
 	err = config.GetByScan(path, &zkc.config)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func CreateCoordinator(config *config.Config, path string) (zkc *zookeeperCoordi
 	return zkc, nil
 }
 
-func (zkc *zookeeperCoordinator) Start() (err error) {
+func (zkc *ZookeeperCoordinator) Start() (err error) {
 
 	//检查
 	isexist, _, err := zkc.conn.Exists(zkc.config.Path)
@@ -85,13 +85,13 @@ func (zkc *zookeeperCoordinator) Start() (err error) {
 	return nil
 
 }
-func (zkc *zookeeperCoordinator) Stop() {
+func (zkc *ZookeeperCoordinator) Stop() {
 	zkc.cancel()
 
 	zkc.Wait()
 }
 
-func (zkc *zookeeperCoordinator) Worker() {
+func (zkc *ZookeeperCoordinator) Worker() {
 
 	for {
 		select {
@@ -110,7 +110,7 @@ func (zkc *zookeeperCoordinator) Worker() {
 
 }
 
-func (zkc *zookeeperCoordinator) CreateNode(path string, data []byte, isPersisted bool) (n *Node, err error) {
+func (zkc *ZookeeperCoordinator) CreateNode(path string, data []byte, isPersisted bool) (n *Node, err error) {
 
 	n = new(Node)
 	n.path = path
@@ -140,7 +140,7 @@ func (zkc *zookeeperCoordinator) CreateNode(path string, data []byte, isPersiste
 	return
 }
 
-func (zkc *zookeeperCoordinator) GetNode(path string) (n *Node, err error) {
+func (zkc *ZookeeperCoordinator) GetNode(path string) (n *Node, err error) {
 	n = new(Node)
 	n.path = path
 	n.absPath = zkc.config.Path + n.path
@@ -158,15 +158,32 @@ func (zkc *zookeeperCoordinator) GetNode(path string) (n *Node, err error) {
 	return
 
 }
+func (zkc *ZookeeperCoordinator) CreateNodeIfNotExist(path string, data []byte, isPersisted bool) (n *Node, err error) {
+	isExist, stat, err := zkc.conn.Exists(zkc.config.Path + path)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		n = new(Node)
+		n.path = path
+		n.absPath = zkc.config.Path + path
+		n.stat = stat
+		n.zk = zkc
+		//n, err = zkc.GetNode(zkc.config.Path + n.path)
+	} else {
+		n, err = zkc.CreateNode(path, data, isPersisted)
+	}
+	return
+}
 
-func (zkc *zookeeperCoordinator) Exist(path string) (bool, error) {
+func (zkc *ZookeeperCoordinator) Exist(path string) (bool, error) {
 	isExist, _, err := zkc.conn.Exists(zkc.config.Path + path)
 	if err != nil {
 		return false, err
 	}
 	return isExist, nil
 }
-func (zkc *zookeeperCoordinator) Lookup(path string) (n *Node) {
+func (zkc *ZookeeperCoordinator) Lookup(path string) (n *Node) {
 	n = new(Node)
 	n.path = path
 	n.absPath = zkc.config.Path + n.path
@@ -174,9 +191,11 @@ func (zkc *zookeeperCoordinator) Lookup(path string) (n *Node) {
 	return
 }
 
-func (zkc *zookeeperCoordinator) GetContext() context.Context {
+func (zkc *ZookeeperCoordinator) GetContext() context.Context {
 	return zkc.context
 }
-func (zkc *zookeeperCoordinator) GetConn() *zk.Conn {
+func (zkc *ZookeeperCoordinator) GetConn() *zk.Conn {
 	return zkc.conn
 }
+
+// todo 递归创建节点

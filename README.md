@@ -7,9 +7,9 @@ go启动框架
 - [x] config
 - [x] db
 - [x] mq
-- [ ] rpc
+- [x] rpc
 - [ ] http
-- [ ] register
+- [x] coordinator
 - [ ] monitor
 - [ ] cache
   - [ ] LRU

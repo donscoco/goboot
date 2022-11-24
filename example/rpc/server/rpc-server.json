@@ -1,0 +1,26 @@
+{
+  "core": {
+    "log": {
+      "logPath": "/tmp/logpath",
+      "logLevel": "INFO",
+      "logMode": "day"
+    },
+    "coordinator": {
+      "zookeeper": {
+        "Addrs"   :["192.168.2.128:2181","192.168.2.128:2182","192.168.2.128:2183"],
+        "Timeout": 6,
+        "Path": "/ironhead"
+      }
+    },
+    "rpc": {
+      "server":{
+        "Addr": ":9090",
+        "Node": "/rpc_server",
+        "Prefix": "",
+        "HeartbeatSec": 2
+      }
+    }
+  },
+  "Server": {
+  }
+}

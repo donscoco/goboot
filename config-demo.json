@@ -97,6 +97,22 @@
       },
       "etcd": {
       }
+    },
+    "rpc": {
+      "server":{
+        "Addr": ":9090",
+        "Node": "/rpc_server",
+        "Prefix": "",
+        "HeartbeatSec": 2
+      },
+      "client": {
+        "Node": "/rpc_server",
+        "MaxConns": 100,
+        "MinConns": 10,
+        "CallTimeoutMs"  :0,
+        "DialTimeoutMs" : 6000,
+        "Retries": 3
+      }
     }
   },
   "ServerObj": {
