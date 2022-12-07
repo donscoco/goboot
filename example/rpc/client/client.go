@@ -6,6 +6,7 @@ import (
 	"goboot/coordinator/mzk"
 	"goboot/log/mlog"
 	"goboot/rpc/mclient"
+	"time"
 )
 
 func main() {
@@ -37,6 +38,9 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	time.Sleep(10 * time.Second)
+
 	for i := 0; i < 10; i++ {
 		go func() {
 			var reply string
@@ -53,5 +57,6 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println(reply)
+	c.Stop()
 
 }
