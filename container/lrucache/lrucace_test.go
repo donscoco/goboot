@@ -20,7 +20,7 @@ func TestLRUCache_Set(t *testing.T) {
 	}
 
 	// 054646372819
-	//lru.ForTeset()
+	lru.ForTest()
 	//
 	//fmt.Println("----------")
 
@@ -36,5 +36,5 @@ func TestLRUCache_Set(t *testing.T) {
 		lru.Set(strconv.Itoa(i), i)
 	}
 	//// [14 13 12 11 10 8 2 9 1 5] 0 8 7 6 4 3
-	//lru.ForTeset()
+	lru.ForTest()
 }

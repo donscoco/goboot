@@ -4,6 +4,7 @@ import (
 	"container/list"
 	"fmt"
 	"log"
+	"strings"
 )
 
 type LRUCache struct {
@@ -67,11 +68,26 @@ func (l *LRUCache) Len() int {
 }
 
 // 测试使用的。查看 list 的顺序
-//func (l *LRUCache) ForTeset() {
-//	len := l.elementList.Len()
-//	for i := 0; i < len; i++ {
-//		elem := l.elementList.Front()
-//		log.Println(elem.Value)
-//		l.elementList.Remove(elem)
-//	}
-//}
+func (l *LRUCache) ForTest() {
+
+	tmp := list.New()
+	var printCont []string
+	length := l.elementList.Len()
+	for i := 0; i < length; i++ {
+		elem := l.elementList.Front()
+		tmp.PushBack(elem.Value.(*Entry))
+		printCont = append(printCont, elem.Value.(*Entry).key)
+		l.elementList.Remove(elem)
+	}
+
+	// 恢复
+	for i := 0; i < length; i++ {
+		elem := tmp.Front()
+		l.elementList.PushBack(elem.Value.(*Entry))
+		tmp.Remove(elem)
+	}
+
+	if len(printCont) > 0 {
+		log.Println(strings.Join(printCont, ","))
+	}
+}

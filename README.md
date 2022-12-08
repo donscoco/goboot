@@ -11,9 +11,11 @@ go启动框架
 - [ ] http
 - [x] coordinator
 - [ ] monitor
-- [ ] cache
-  - [ ] LRU
-  - [ ] concurrent map
+- [x] cache
+  - [x] LRU
+  - [x] LFU
+  - [x] concurrent map
+  - [x] consistent-hashing
 - [ ] util
   - [ ] ratelimit
   - [ ] distributed lockd
