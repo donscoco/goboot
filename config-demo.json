@@ -113,6 +113,19 @@
         "DialTimeoutMs" : 6000,
         "Retries": 3
       }
+    },
+    "lock": {
+      "redis": {
+        "username": "ironhead",
+        "password": "",
+        "addrs": ["127.0.0.1:6379"],
+        "database": 0,
+        "DialTimeout": 10,
+        "ReadTimeout":30,
+        "WriteTimeout":30,
+        "MaxRetries":   3
+      },
+      "zk": []
     }
   },
   "ServerObj": {

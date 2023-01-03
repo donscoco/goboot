@@ -18,7 +18,7 @@ go启动框架
   - [x] consistent-hashing
 - [ ] util
   - [ ] ratelimit
-  - [ ] distributed lockd
+  - [x] distributed lock
   - [ ] sql parser
   - [ ] Bloom filter
 
