@@ -1,4 +1,4 @@
-package redis
+package lock
 
 import (
 	"github.com/go-redis/redis"

@@ -1,4 +1,4 @@
-package redis
+package lock
 
 import (
 	"goboot/config"
@@ -10,8 +10,9 @@ import (
 	"time"
 )
 
+// 测试redis分布式锁
 func TestCreateRedisLocker(t *testing.T) {
-	config.ConfigFilePath = "../../../config-demo.json"
+	config.ConfigFilePath = "../../config-demo.json"
 	conf := config.NewConfiguration(config.ConfigFilePath)
 
 	//locker, err := CreateRedisLocker(conf, "/core/lock/redis", "lockname", 100)
@@ -45,4 +46,30 @@ func TestCreateRedisLocker(t *testing.T) {
 	sig := make(chan os.Signal)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	<-sig
+}
+
+// 测试zk分布式锁
+func TestCreateZKLocker(t *testing.T) {
+	config.ConfigFilePath = "../../config-demo.json"
+	conf := config.NewConfiguration(config.ConfigFilePath)
+
+	InitZK(conf, "/core/lock/zk")
+	locker := DefaultZKLocker
+
+	// 模拟10个协程/进程/服务器 请求分布式锁,在其他机器也启动观察。
+	for i := 0; i < 10; i++ {
+		go func(n int) {
+			for {
+				locker.Lock()
+				log.Printf("进程%d 执行业务逻辑", n)
+				time.Sleep(3 * time.Second)
+				locker.Unlock()
+			}
+		}(i)
+	}
+
+	sig := make(chan os.Signal)
+	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	<-sig
+
 }

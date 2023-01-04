@@ -19,10 +19,10 @@ func main() {
 	}
 	c.Start()
 
-	//n, _ := c.CreateNode("/node1", []byte("data1"), true)
-	n, _ := c.GetNode("/node1")
+	n, _ := c.CreateNode("/node1", []byte("data1"), true)
+	n, _ = c.GetNode("/node1")
 
-	// watch
+	// watch 一个节点，然后启一个协程去改动这个节点，观察watch情况
 	go n.Watch(c.GetContext(), mzk.EventDataChange|mzk.EventChildChange, watchCallback)
 	go func() {
 		time.Sleep(3 * time.Second)
