@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"goboot/config"
+	"github.com/donscoco/goboot/config"
 	"strconv"
 	"time"
 

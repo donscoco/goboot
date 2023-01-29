@@ -1,6 +1,6 @@
 package db
 
-import "goboot/log/mlog"
+import "github.com/donscoco/goboot/log/mlog"
 
 var logger = mlog.NewLogger("db")
 

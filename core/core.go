@@ -5,8 +5,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"goboot/config"
-	"goboot/log/mlog"
+	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/log/mlog"
 )
 
 var logger = mlog.NewLogger(`bootcore`)

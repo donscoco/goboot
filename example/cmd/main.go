@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"goboot/config"
-	"goboot/core"
-	"goboot/log/mlog"
-	"goboot/mq/mkafka"
+	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/core"
+	"github.com/donscoco/goboot/log/mlog"
+	"github.com/donscoco/goboot/mq/mkafka"
 	"net/http"
 	_ "net/http/pprof"
 )

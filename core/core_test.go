@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"goboot/config"
-	"goboot/log/mlog"
+	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/log/mlog"
 )
 
 // go test -v -run TestCore ./core

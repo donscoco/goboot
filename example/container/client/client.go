@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	consistent_hashing "goboot/container/consistent-hashing"
+	consistent_hashing "github.com/donscoco/goboot/container/consistent-hashing"
 	"log"
 	"net"
 	"net/rpc"

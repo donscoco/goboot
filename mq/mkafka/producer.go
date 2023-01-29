@@ -3,8 +3,8 @@ package mkafka
 import (
 	"fmt"
 	"github.com/Shopify/sarama"
-	"goboot/config"
-	"goboot/log/mlog"
+	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/log/mlog"
 	"sync"
 )
 

@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"goboot/config"
+	"github.com/donscoco/goboot/config"
 )
 
 // 全局的实例

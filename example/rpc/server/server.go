@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"goboot/config"
-	"goboot/coordinator/mzk"
-	"goboot/log/mlog"
-	"goboot/rpc/mserver"
+	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/coordinator/mzk"
+	"github.com/donscoco/goboot/log/mlog"
+	"github.com/donscoco/goboot/rpc/mserver"
 	"os"
 	"os/signal"
 	"syscall"

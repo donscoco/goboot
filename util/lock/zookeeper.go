@@ -3,7 +3,7 @@ package lock
 import (
 	"fmt"
 	"github.com/samuel/go-zookeeper/zk"
-	"goboot/config"
+	"github.com/donscoco/goboot/config"
 	"strconv"
 	"strings"
 	"time"

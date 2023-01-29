@@ -3,7 +3,7 @@ package db
 import (
 	//redis "gopkg.in/redis.v5"
 	"github.com/go-redis/redis"
-	"goboot/config"
+	"github.com/donscoco/goboot/config"
 	"strconv"
 	"time"
 )

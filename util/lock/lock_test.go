@@ -1,7 +1,7 @@
 package lock
 
 import (
-	"goboot/config"
+	"github.com/donscoco/goboot/config"
 	"log"
 	"os"
 	"os/signal"

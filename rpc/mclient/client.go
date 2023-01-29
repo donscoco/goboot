@@ -3,9 +3,9 @@ package mclient
 import (
 	"context"
 	"encoding/json"
-	"goboot/config"
-	"goboot/coordinator/mzk"
-	"goboot/rpc/mserver"
+	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/coordinator/mzk"
+	"github.com/donscoco/goboot/rpc/mserver"
 	"sync"
 )
 

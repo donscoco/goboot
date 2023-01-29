@@ -2,7 +2,7 @@ package lock
 
 import (
 	"github.com/go-redis/redis"
-	"goboot/config"
+	"github.com/donscoco/goboot/config"
 	"log"
 	"time"
 )
