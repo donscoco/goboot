@@ -10,7 +10,7 @@
         "proxyname": "ironhead-mysql",
         "username": "ironhead",
         "password": "${IRONHEAD_PWD}",
-        "addr": "192.168.2.160:3306",
+        "addr": "192.168.2.132:3306",
         "database": "test",
         "ConnMaxLifetime":7200
       }],
@@ -27,15 +27,15 @@
           "MaxRetries":   3
         }
       ],
-      "mongodb": [
+      "#mongodb": [
         {
           "proxyname": "ironhead-mongodb",
           "username": "ironhead",
           "password": "${IRONHEAD_PWD}",
           "addrs":  [
-            "192.168.2.132:27017",
-            "192.168.2.132:27018",
-            "192.168.2.132:27019"
+            "192.168.2.128:27017",
+            "192.168.2.128:27018",
+            "192.168.2.128:27019"
           ],
           "database":  "ironhead",
           "ReplicaSetName": "ironhead",

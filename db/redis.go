@@ -2,8 +2,8 @@ package db
 
 import (
 	//redis "gopkg.in/redis.v5"
-	"github.com/go-redis/redis"
 	"github.com/donscoco/goboot/config"
+	"github.com/go-redis/redis"
 	"strconv"
 	"time"
 )
@@ -26,8 +26,8 @@ type RedisProxy struct {
 	IdleTimeout        int
 	IdleCheckFrequency int
 
-	clusterClient *redis.ClusterClient
-	sigleClient   *redis.Client
+	ClusterClient *redis.ClusterClient
+	SigleClient   *redis.Client
 }
 
 func CreateRedisProxy(config *config.Config, path string, manager *DBManager) (err error) {
@@ -54,8 +54,8 @@ func CreateRedisProxy(config *config.Config, path string, manager *DBManager) (e
 			if len(p.Password) > 0 {
 				opt.Password = p.Password
 			}
-			p.clusterClient = redis.NewClusterClient(opt)
-			cmd := p.clusterClient.Ping()
+			p.ClusterClient = redis.NewClusterClient(opt)
+			cmd := p.ClusterClient.Ping()
 			if cmd.Val() != "PONG" {
 				return cmd.Err()
 			}
@@ -74,9 +74,9 @@ func CreateRedisProxy(config *config.Config, path string, manager *DBManager) (e
 			if len(p.Password) > 0 {
 				opt.Password = p.Password
 			}
-			p.sigleClient = redis.NewClient(opt)
+			p.SigleClient = redis.NewClient(opt)
 
-			cmd := p.sigleClient.Ping()
+			cmd := p.SigleClient.Ping()
 			if cmd.Val() != "PONG" {
 				return cmd.Err()
 			}

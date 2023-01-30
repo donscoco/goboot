@@ -36,7 +36,7 @@ type MongoDBProxy struct {
 	Mechanism   string
 	Timeout     int
 
-	client *mongo.Client
+	Client *mongo.Client
 }
 
 var DEFAULT_IDCOUNTER = "sys.IdCounter"
@@ -117,7 +117,7 @@ func CreateMongoDBProxy(config *config.Config, path string, manager *DBManager) 
 			return err
 		}
 
-		p.client = client
+		p.Client = client
 		manager.MongoDB[p.ProxyName] = p
 
 	}

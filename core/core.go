@@ -1,11 +1,13 @@
 package core
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/donscoco/goboot/config"
+	"github.com/donscoco/goboot/db"
 	"github.com/donscoco/goboot/log/mlog"
 )
 
@@ -14,6 +16,8 @@ var GoCore *Core
 
 type Core struct {
 	config *config.Config
+
+	DB *db.DBManager
 
 	signal chan os.Signal
 
@@ -110,4 +114,57 @@ func (a *Core) stop() {
 
 func (a *Core) GetConf() (c *config.Config) {
 	return a.config
+}
+
+func InitDBManager() error {
+
+	// 初始化数据库连接
+	a := GoCore
+	if a == nil {
+		err := fmt.Errorf("GoCore 未初始化")
+		logger.Error(err)
+		return err
+	}
+
+	if !GoCore.GetConf().Exist(db.DBConfigPath) {
+		err := fmt.Errorf("配置" + db.DBConfigPath + "不存在")
+		logger.Error(err)
+		return err
+	}
+
+	logger.Infof("启动数据库管理器")
+	a.DB = new(db.DBManager)
+
+	if a.GetConf().Exist(db.DBConfigPath + "/mysql") {
+		a.DB.MySQL = make(map[string]*db.MySQLProxy)
+		err := db.CreateMySQLProxy(a.GetConf(), db.DBConfigPath+"/mysql", a.DB)
+		if err != nil {
+			logger.Error(err)
+			return err
+		}
+		logger.Infof("启动[mysql]数据库管理器")
+	}
+
+	if a.GetConf().Exist(db.DBConfigPath + "/redis") {
+		a.DB.Redis = make(map[string]*db.RedisProxy)
+		err := db.CreateRedisProxy(a.GetConf(), db.DBConfigPath+"/redis", a.DB)
+		if err != nil {
+			logger.Error(err)
+			return err
+		}
+		logger.Infof("启动[redis]数据库管理器")
+	}
+
+	if a.GetConf().Exist(db.DBConfigPath + "/mongodb") {
+		a.DB.MongoDB = make(map[string]*db.MongoDBProxy)
+		err := db.CreateMongoDBProxy(a.GetConf(), db.DBConfigPath+"/mongodb", a.DB)
+		if err != nil {
+			logger.Error(err)
+			return err
+		}
+		logger.Infof("启动[mongodb]数据库管理器")
+	}
+
+	return nil
+
 }

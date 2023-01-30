@@ -3,9 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
+	"github.com/donscoco/goboot/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"github.com/donscoco/goboot/config"
 	"log"
 	"testing"
 	"time"
@@ -40,11 +40,11 @@ func TestCreateRedisProxy(t *testing.T) {
 		log.Fatal(err)
 	}
 	p := dbm.Redis["ironhead-redis"]
-	ok, err := p.sigleClient.SetNX("testkey", "testval", time.Duration(100*time.Second)).Result()
+	ok, err := p.SigleClient.SetNX("testkey", "testval", time.Duration(100*time.Second)).Result()
 	if err != nil {
 	}
 	fmt.Println(ok)
-	result, err := p.sigleClient.Get("testkey").Result()
+	result, err := p.SigleClient.Get("testkey").Result()
 	if err != nil {
 	}
 	fmt.Println(result)
