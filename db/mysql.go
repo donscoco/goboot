@@ -42,7 +42,7 @@ func CreateMySQLProxy(config *config.Config, path string, manager *DBManager) (e
 		}
 		// [user[:password]@][net[(addr)]]/dbname[?param1=value1&paramN=valueN]
 		dsn := fmt.Sprintf(
-			"%s:%s@tcp(%s)/%s?timeout=%ds&readTimeout=%ds&writeTimeout=%ds",
+			"%s:%s@tcp(%s)/%s?timeout=%ds&readTimeout=%ds&writeTimeout=%ds&parseTime=true",
 			p.Username, p.Password, p.Addr, p.Database,
 			p.ConnTimeoutSec,
 			p.ReadTimeoutSec,
